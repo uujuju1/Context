@@ -62,8 +62,12 @@ public class JsTester extends CodableTester {
             ArrayList<Object> argsObj = new ArrayList<>();
 
             Scripts scripts = Vars.mods.getScripts();
+
+            String textCode;
+            if(safeRunning) textCode = "function(){" + Utils.applySafeRunning(code) + " \n}";
+            else textCode = "function(){"  + code + " \n}";
+
             try {
-                String textCode = "function(){" + Utils.applySafeRunning(code) + " \n}";
                 Function fn = scripts.context.compileFunction(scripts.scope, textCode, "JsTester", 1);
                 runFn = () -> fn.call(scripts.context, scripts.scope, rhino.Context.toObject(this, scripts.scope), argsObj.toArray());
                 setError();

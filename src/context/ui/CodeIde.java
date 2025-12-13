@@ -114,7 +114,6 @@ public class CodeIde {
         if (tabs.size == 1) this.selectTab(0);
     }
 
-
     public void selectTab(int index) {
         if (index < 0 || index >= tabs.size) return;
         selectedTab = tabs.get(index);
@@ -147,7 +146,6 @@ public class CodeIde {
         onSave.get(this);
         return true;
     }
-
 
     public void showError(String message) {
         BaseDialog d = new BaseDialog("@error");

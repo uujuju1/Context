@@ -65,9 +65,13 @@ public class DrawTester extends CodableTester {
             }
 
             Scripts scripts = Vars.mods.getScripts();
+
+            String textCode;
+            if(safeRunning) textCode = "function(){" + Utils.applySafeRunning(code) + " \n}";
+            else textCode = "function(){"  + code + " \n}";
+
             try {
-                String codeStr = "function(){" + Utils.applySafeRunning(code) + "\n}";
-                Function fn = scripts.context.compileFunction(scripts.scope, codeStr, "drawTester", 1);
+                Function fn = scripts.context.compileFunction(scripts.scope, textCode, "drawTester", 1);
                 drawFn = () -> fn.call(scripts.context, scripts.scope, rhino.Context.toObject(this, scripts.scope), new Object[0]);
 
                 setError();

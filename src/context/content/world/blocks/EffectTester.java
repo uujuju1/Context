@@ -53,9 +53,13 @@ public class EffectTester extends CodableTester {
             }
 
             Scripts scripts = Vars.mods.getScripts();
+
+            String textCode;
+            if(safeRunning) textCode = "function(e){" + Utils.applySafeRunning(code) + " \n}";
+            else textCode = "function(e){"  + code + " \n}";
+
             try {
-                String codeStr = "function(e){" + Utils.applySafeRunning(code) + "\n}";
-                Function fn = scripts.context.compileFunction(scripts.scope, codeStr, "EffectTester", 1);
+                Function fn = scripts.context.compileFunction(scripts.scope, textCode, "EffectTester", 1);
                 effect.renderer = e -> {
                     setError();
                     try {
