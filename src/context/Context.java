@@ -37,7 +37,40 @@ public class Context extends Mod {
         new IconDictionary("icon-dictionary");
         new FunctionAnalyzer("function-analyzer");
     }
-
+    
+    /**
+     * Adds the ImportClass function, which allows existing packages to be imported and be accessed through the console.
+     * Adds the setDelta function, which modifies the game's delta time, speeding up or slowing down the game.
+     */
+    @Override
+    public void init() {
+        Vars.mods.getScripts().runConsole("importPackage(Packages.rhino)");
+        Vars.mods.getScripts().runConsole(
+          """
+						function importClass(packageName){
+		
+						let constr = java.lang.Class.forName("rhino.NativeJavaPackage").getDeclaredConstructor(java.lang.Boolean.TYPE, java.lang.String, java.lang.ClassLoader);
+						constr.setAccessible(true);
+		
+						let p = constr.newInstance(true, packageName, Vars.mods.mainLoader());
+		
+						let scope = Reflect.get(Vars.mods.getScripts(), "scope");
+						Reflect.invoke(ScriptableObject, p, "setParentScope", [scope], [Scriptable]);
+		
+						importPackage(p);\s
+		
+						}"""
+        );
+        Vars.mods.getScripts().runConsole(
+          """
+						function setDelta(speed){
+		
+						Time.setDeltaProvider(() => Math.min(Core.graphics.getDeltaTime() * 60 * speed, 3 * speed));\s
+		
+						}"""
+        );
+    }
+    
     /**
      * WIP
      * Reloads the contents of the all the mods. This can crash your game, but to reload the content you will need restart the game anyway
