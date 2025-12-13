@@ -20,6 +20,7 @@ public class Utils {
     }
     public static String applySafeRunning(String code, String runInError) {
         String resultCode = code;
+        //todo Add option to jump strings and comments
         Pattern pat1 = Pattern.compile("function\\s*\\([a-zA-Z0-9_.,$\\s]*\\)\\s*\\{", Pattern.DOTALL);
         Matcher mat1 = pat1.matcher(code);
         while(mat1.find()) {
