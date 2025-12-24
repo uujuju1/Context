@@ -3,8 +3,8 @@ name: "context"
 author: "Alstin112 and Flintyx"
 description: "this mod add more command blocks to help mod-creators, inspired in \"testers\" by [royal]sk7725[]"
 
-minGameVersion: 147
-version: "v1.0.1"
+minGameVersion: 154
+version: "v1.1"
 
 java: true
 main: "context.Context"
