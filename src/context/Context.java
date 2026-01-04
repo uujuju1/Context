@@ -2,10 +2,12 @@ package context;
 
 import arc.util.Log;
 import context.content.world.blocks.*;
+import context.ui.BetterIdeDialog;
 import context.ui.dialogs.ReloadContents;
 import mindustry.Vars;
 import mindustry.mod.Mod;
 import mindustry.mod.Mods;
+import mindustry.mod.Scripts;
 
 import java.lang.reflect.Field;
 
@@ -13,13 +15,28 @@ import static mindustry.Vars.platform;
 
 @SuppressWarnings("unused")
 public class Context extends Mod {
+    public static Log.LogHandler onLog;
+    public static boolean logging = false;
+
     @Override
     public void loadContent() {
+        Log.LogHandler log = Log.logger;
+        if(!logging) {
+            logging = true;
+            Log.logger = (level, text) -> {
+                if(onLog != null) onLog.log(level, text);
+                log.log(level, text);
+            };
+        }
+
+        Scripts scripts = Vars.mods.getScripts();
+        scripts.scope.put("BetterIdeDialog", scripts.scope,  BetterIdeDialog.class);
         new DrawTester("draw-tester");
         new JsTester("js-tester");
         new EffectTester("effect-tester");
         new IconDictionary("icon-dictionary");
         new FunctionAnalyzer("function-analyzer");
+        new TableTester("table-tester");
     }
 
     /**
@@ -63,5 +80,9 @@ public class Context extends Mod {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public BetterIdeDialog VSCodeWindow() {
+        return new BetterIdeDialog();
     }
 }
