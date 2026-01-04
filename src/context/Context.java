@@ -36,7 +36,6 @@ public class Context extends Mod {
         new EffectTester("effect-tester");
         new IconDictionary("icon-dictionary");
         new FunctionAnalyzer("function-analyzer");
-        new TableTester("table-tester");
     }
 
     /**
